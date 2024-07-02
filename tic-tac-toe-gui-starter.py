@@ -83,17 +83,22 @@ class Board:
         return False
 
     def is_win(self, recent_mark_pos):
-        """
         i, j = recent_mark_pos
+        mark = self.player.mark
+
         # check i-th row
-        if self.cells[i][0].state == self.cells[i][1].state == self.cells[i][2].state == self.player.mark: return True
+        if all(self.cells[i][col].state == mark for col in range(3)):
+            return True
         # check j-th col
-        ...
+        if all(self.cells[row][j].state == mark for row in range(3)):
+            return True
         # check left diagonal
-        ...
+        if i == j and all(self.cells[d][d].state == mark for d in range(3)):
+            return True
         # check right diagonal
-        ...
-        """
+        if i + j == 2 and all(self.cells[d][2 - d].state == mark for d in range(3)):
+            return True
+
         return False
 
     def update(self, recent_mark_pos):

@@ -73,14 +73,12 @@ class Board:
             self.cells.append(row)
 
     def is_full(self):
-        """
         empty_cnt = 0
         for i in range(3):
             for j in range(3):
-                if self.cells[i][j].state == "": ...
-        if ... : return True
-        """
-        return False
+                if self.cells[i][j].state == "": empty_cnt += 1
+        if empty_cnt == 0: return True
+        else: return False
 
     def is_win(self, recent_mark_pos):
         i, j = recent_mark_pos

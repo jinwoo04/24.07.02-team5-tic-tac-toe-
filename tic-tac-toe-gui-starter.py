@@ -38,9 +38,10 @@ class Player:
         self.mark = mark
 
     def switch(self):
-        if self.mark == 'O': self.mark = 'X'
+        if self.mark == 'O':
+            self.mark = 'X'
         else:
-            self.mark ='O'
+            self.mark = 'O'
         return self.mark
 
 
@@ -68,31 +69,30 @@ class Board:
         for i in range(3):
             row = []
             for j in range(3):
-                row.append(cell_class([i,j], *args))
+                row.append(cell_class([i, j], *args))
             self.cells.append(row)
 
     def is_full(self):
-        empty_cnt = 0
-        for i in range(3):
-            for j in range(3):
-                if self.cells[i][j].state == "": empty_cnt += 1
-        if empty_cnt == 0: return True
-        else: return False
+        for row in self.cells:
+            for cell in row:
+                if cell.state == "":
+                    return False
+        return True
 
     def is_win(self, recent_mark_pos):
         i, j = recent_mark_pos
         mark = self.player.mark
 
-        # check i-th row
+        # Check i-th row
         if all(self.cells[i][col].state == mark for col in range(3)):
             return True
-        # check j-th col
+        # Check j-th col
         if all(self.cells[row][j].state == mark for row in range(3)):
             return True
-        # check left diagonal
+        # Check left diagonal
         if i == j and all(self.cells[d][d].state == mark for d in range(3)):
             return True
-        # check right diagonal
+        # Check right diagonal
         if i + j == 2 and all(self.cells[d][2 - d].state == mark for d in range(3)):
             return True
 
@@ -123,9 +123,10 @@ class CellGUI(Cell):
         self.button = tk.Button(master=self.board.board_frame, text=self.state, height=2, width=5, command=self.on_click)
 
     def on_click(self):
-        self.check(self.board.player.mark)
-        self.button.configure(text=self.state)
-        self.board.update(self.pos)
+        if self.state == "":  # Only update if the cell is empty
+            self.check(self.board.player.mark)
+            self.button.configure(text=self.state)
+            self.board.update(self.pos)
 
 
 class BoardGUI(Board):
@@ -163,6 +164,9 @@ class BoardGUI(Board):
         res = super().update(recent_mark_pos)
         if res == "win":
             self.msg_label.configure(text="Player-{} Won!".format(self.player.mark))
+            for row in self.cells:
+                for cell in row:
+                    cell.button.config(state=tk.DISABLED)
             return
         elif res == "draw":
             self.msg_label.configure(text="Match Draw!")
@@ -171,9 +175,3 @@ class BoardGUI(Board):
 
 
 board = BoardGUI()
-
-
-
-
-
-

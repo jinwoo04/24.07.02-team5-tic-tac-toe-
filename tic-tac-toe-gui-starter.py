@@ -38,11 +38,10 @@ class Player:
         self.mark = mark
 
     def switch(self):
-        """
-        if self.mark == 'O': self.mark = ...
-        else: ....
-        """
-        return
+        if self.mark == 'O': self.mark = 'X'
+        else:
+            self.mark ='O'
+        return self.mark
 
 
 class Board:
@@ -100,7 +99,8 @@ class Board:
         return False
 
     def update(self, recent_mark_pos):
-        pass
+        self.player.switch()
+        return "continue"
 
 
 class CellGUI(Cell):

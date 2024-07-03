@@ -99,6 +99,10 @@ class Board:
         return False
 
     def update(self, recent_mark_pos):
+        if self.is_win(recent_mark_pos):
+            return "win"
+        if self.is_full():
+            return "draw"
         self.player.switch()
         return "continue"
 
